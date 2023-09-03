@@ -1,0 +1,36 @@
+@import '../../colors'
+@import '../../commons'
+
+.settings-item
+    width: 100%
+
+    font-size: 3vmin
+
+    label
+        color: $main-color
+        display: block
+        padding-bottom: 1vmin
+
+    input
+        width: 100%
+
+        background-color: $main-color-75
+
+        color: $text-color
+
+        &:hover, &:focus
+            background-color: $main-color-25
+            color: $main-color
+
+        &:focus
+            background-color: $text-color
+            outline: 1px $main-color solid
+
+        /* Chrome, Safari, Edge, Opera */
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button
+            -webkit-appearance: none
+            margin: 0
+        /* Firefox */
+        &[type=number]
+            -moz-appearance: textfield

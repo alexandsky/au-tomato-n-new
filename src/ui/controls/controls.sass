@@ -1,0 +1,35 @@
+@import '../commons'
+@import '../colors'
+
+.controls
+    height: 100%
+
+    align-self: flex-end
+
+    display: flex
+    flex-direction: row
+    align-items: flex-end
+    justify-content: flex-end
+
+    .visible
+        display: flex
+
+    .hidden
+        display: none
+
+    div
+        height: 100%
+        display: flex
+        flex-direction: row
+        gap: 2vmin
+
+        button
+            background-color: $text-color
+            color: $main-color
+
+            &:hover
+                background-color: $text-color-75
+
+            &:active
+                background-color: $text-color-25
+                color: $text-color

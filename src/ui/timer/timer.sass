@@ -1,0 +1,46 @@
+@import '../commons'
+@import '../colors'
+
+.timer
+    height: 100%
+    width: 100%
+
+    display: flex
+    flex-direction: column
+    align-items: stretch
+    justify-content: center
+
+.info
+    text-align: center
+
+    &__state
+        font-size: 4vmin
+        color: $text-color-50
+
+    &__prompt
+        font-size: 6vmin
+        color: $text-color
+
+.time
+    width: 100%
+    display: grid
+    grid-template-columns: 2ch .5ch 2ch .5ch 2ch
+    grid-template-rows: 1fr
+
+    align-items: center
+    justify-content: center
+
+    color: $text-color
+    font-size: 20vmin
+
+    .hidden
+        display: none
+
+    &__hours
+        justify-self: end
+
+    &__minutes
+        justify-self: center
+
+    &__seconds
+        justify-self: start
