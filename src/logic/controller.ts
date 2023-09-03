@@ -108,7 +108,7 @@ export class Controller {
     }
 
     reset() {
-        Object.assign(this.time, toDetailedTime(this.settings.time.work));
+        Object.assign(this.time, toDetailedTime(this.settings.time.work * 60));
         this.state.cycle = 0;
         this.state.phase = 'work';
     }
