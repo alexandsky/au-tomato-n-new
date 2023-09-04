@@ -2,13 +2,17 @@ import { useData } from "../../data";
 import cross from '../../assets/icons/cross.svg';
 import SettingsItem from "./settings-item/SettingsItem";
 import './settings.sass';
+import { toDetailedTime } from "../../utils";
 
 export default function Settings() {
 
-    const { settings, misc } = useData();
+    const { time, settings, misc } = useData();
 
     function handleClose() {
         misc.status.settings = 'hidden';
+        if (misc.status.timer === 'stopped') {
+            Object.assign(time, toDetailedTime(settings.time.work * 60));
+        }
     }
 
     const changeHandlers = {

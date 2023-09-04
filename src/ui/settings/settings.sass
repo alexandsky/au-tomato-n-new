@@ -6,10 +6,14 @@
     width: 100%
     padding: 3vmin
 
-    display: grid
-    grid-template-rows: 1fr 5fr 1fr
-    grid-template-columns: 1fr
+    // display: grid
+    // grid-template-rows: 1fr 5fr 1fr
+    // grid-template-columns: 1fr
     gap: 5vmin
+
+    display: flex
+    flex-direction: column
+    justify-content: space-around
 
     header
         display: flex
@@ -47,6 +51,8 @@
                     transform: rotate(180deg)
 
     main
+        flex: 1
+
         display: flex
         flex-direction: column
         align-items: flex-start
