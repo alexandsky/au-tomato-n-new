@@ -1,4 +1,4 @@
-import { DetailedTime, MiscSettings, PomoSettings, PomoState } from "../types";
+import { Data, DetailedTime, MiscSettings, PomoSettings, PomoState, SerializableData } from "../types";
 
 export const defaultSettings = {
     time: {
@@ -44,4 +44,10 @@ export const defaultData = {
     stop: () => { },
     pause: () => { },
     resume: () => { }
-};
+} as Data;
+
+export const defaultSerializableData = {
+    settings: defaultSettings,
+    state: defaultState,
+    time: defaultTime
+} as SerializableData;

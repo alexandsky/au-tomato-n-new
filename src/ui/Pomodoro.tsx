@@ -11,7 +11,7 @@ export default function Pomodoro() {
     const { misc } = useData();
 
     return (
-        <main class="pomodoro-app">
+        <main class="pomodoro">
             <header>
                 <Titlebar />
             </header>

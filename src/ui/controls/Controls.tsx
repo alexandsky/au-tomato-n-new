@@ -4,7 +4,7 @@ import './controls.sass';
 
 export default function Controls() {
 
-    const { start, stop, pause, resume, misc } = useData();
+    const { start, stop, pause, resume, reset, misc } = useData();
 
     return (
         <div class="controls">
@@ -34,6 +34,18 @@ export default function Controls() {
                 <ControlsButton
                     onClick={stop}
                     text={'stop'}
+                />
+                <ControlsButton
+                    onClick={resume}
+                    text={'resume'}
+                />
+            </ControlsGroup>
+            <ControlsGroup
+                hidden={misc.status.timer !== 'loaded'}
+            >
+                <ControlsButton
+                    onClick={reset}
+                    text={'reset'}
                 />
                 <ControlsButton
                     onClick={resume}

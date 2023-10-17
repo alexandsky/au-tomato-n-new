@@ -1,21 +1,18 @@
 @import './colors'
 @import './commons'
 
-.pomodoro-app
+.pomodoro
     width: 100%
     height: 100%
     padding: 3vmin
-
+    flex-direction: column
+    display: flex
     overflow: hidden
-
+    position: relative
     background-color: $main-color
 
-    position: relative
-
-    display: grid
-    grid-template-areas: ('titlebar' 'timer' 'controls')
-    grid-template-rows: 2fr 10fr 1fr
-    grid-template-columns: 1fr
+    section
+        flex: 1
 
     footer
         display: flex
@@ -24,17 +21,13 @@
         gap: 2vmin
 
     aside
+        position: absolute
+        top: 0
+        left: 100%
         height: 100%
         width: 50%
-
         border-radius: 6vmin 0 0 6vmin
-
-        left: 100%
-
         background-color: $text-color
-
-        position: absolute
-
         transition: transform .5s ease-out
 
         &.hidden

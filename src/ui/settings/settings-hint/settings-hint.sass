@@ -1,0 +1,41 @@
+@import '../../colors'
+@import '../../commons'
+
+.settings-hint
+    position: relative
+    display: inline-block
+    margin-left: $padding-xs
+    padding-bottom: $padding-xs
+
+    .hint-icon
+        display: flex
+        align-items: center
+        justify-content: center
+        height: 3vmin
+        width: 3vmin
+        font-size: $font-xs
+        border-radius: 100vmin
+        background-color: $main-color-75
+        color: $text-color
+        cursor: pointer
+        transition: color .1s ease-in-out, background-color .1s ease-in-out
+
+        &:hover
+            background-color: $main-color-25
+            color: $main-color
+
+    .hint-text
+        opacity: 0
+        visibility: hidden
+        transition: opacity .1s ease-in-out
+        position: absolute
+        right: 0
+        font-size: $font-xs
+        padding: $padding-s
+        border-radius: $border-radius-xs
+        width: 30vmin
+        background-color: lighten($main-color, 35%)
+        color: $main-color
+        &.visible
+            opacity: 1
+            visibility: visible

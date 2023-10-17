@@ -1,4 +1,4 @@
-import { JSX } from 'solid-js';
+import { JSX, JSXElement } from 'solid-js';
 import './settings-item.sass';
 
 const DEFAULT_MIN = 1;
@@ -10,10 +10,10 @@ type SettingsItemProps = {
     label: string;
     min?: number;
     max?: number;
+    hint?: JSXElement;
 }
 
 function SettingsItem(props: SettingsItemProps) {
-
     const min = props.min || DEFAULT_MIN;
     const max = props.max || DEFAULT_MAX;
 
@@ -33,6 +33,7 @@ function SettingsItem(props: SettingsItemProps) {
     return (
         <div class="settings-item">
             <label>{props.label || 'item'}</label>
+            {props.hint}
             <input
                 type='number'
                 min={min}

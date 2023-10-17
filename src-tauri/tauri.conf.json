@@ -7,8 +7,8 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "au-tomato-n",
-    "version": "0.1.0"
+    "productName": "Au-tomato-n",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -16,7 +16,7 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
+      "category": "Productivity",
       "copyright": "",
       "deb": {
         "depends": []
@@ -55,14 +55,13 @@
     },
     "windows": [
       {
-        "fullscreen": false,
-        "height": 600,
-        "resizable": true,
         "title": "Au-tomato-n",
+        "fullscreen": false,
+        "resizable": true,
         "width": 800,
-        "minHeight": 400,
-        "minWidth": 500,
-        "decorations": true
+        "minWidth": 800,
+        "height": 600,
+        "minHeight": 600
       }
     ]
   }

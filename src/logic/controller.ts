@@ -1,9 +1,12 @@
 import { defaultPopupMessages } from "../data";
-import { DetailedTime, MiscSettings, PomoSettings, PomoState } from "../types";
-import { MAX_POMO_CYCLE_VALUE, toDetailedTime } from "../utils";
+import { DataLoadedState, DetailedTime, MiscSettings, PomoSettings, PomoState } from "../types";
+import { MAX_CYCLE, toDetailedTime } from "../utils";
 import { ticker } from "./ticker";
 import blip from '../assets/sounds/blip.wav';
 
+/**
+ * App data controller
+ */
 export class Controller {
     private misc: MiscSettings;
     private settings: PomoSettings;
@@ -18,16 +21,26 @@ export class Controller {
         misc: MiscSettings,
         settings: PomoSettings,
         state: PomoState,
-        time: DetailedTime
+        time: DetailedTime,
+        isLoaded: DataLoadedState
     ) {
         this.misc = misc;
         this.settings = settings;
         this.state = state;
         this.time = time;
+
         this.ticker.onmessage = () => {
             if (!this.secondsTick()) {
                 this.nextPhase();
             }
+        }
+
+        if (isLoaded.time || isLoaded.state) {
+            this.misc.status.timer = 'loaded';
+        }
+
+        if (isLoaded.any) {
+            this.showPopup('saved timer state was loaded');
         }
     }
 
@@ -72,18 +85,25 @@ export class Controller {
 
     // pomodoro-related methods
 
+    /**
+     * Updates time according to current phase
+     */
     private updateTime() {
         Object.assign(this.time, toDetailedTime(this.settings.time[this.state.phase] * 60));
     }
 
-    private showPopup() {
-        this.misc.message = defaultPopupMessages[this.state.phase];
+    /**
+     * Shows popup with given message or based on current state if message was not provided
+     * @param message message to show
+     */
+    showPopup(message?: string) {
+        this.misc.message = message ?? defaultPopupMessages[this.state.phase];
         this.misc.status.popup = 'visible';
         setTimeout(() => this.misc.status.popup = 'hidden', 5000);
     }
 
     private nextCycle() {
-        if (this.state.cycle + 1 > MAX_POMO_CYCLE_VALUE) {
+        if (this.state.cycle + 1 > MAX_CYCLE) {
             console.error("Pomodoro timer has reached cycle limit!");
             this.state.cycle = 0;
             return;
@@ -107,29 +127,44 @@ export class Controller {
         this.showPopup();
     }
 
+    /**
+     * Resets data to defaults
+     */
     reset() {
         Object.assign(this.time, toDetailedTime(this.settings.time.work * 60));
         this.state.cycle = 0;
         this.state.phase = 'work';
+        this.misc.status.timer = 'stopped';
     }
 
+    /**
+     * Starts pomodoro timer
+     */
     start() {
         this.reset();
         this.ticker.postMessage('start');
         this.misc.status.timer = 'started';
     }
 
+    /**
+     * Resumes timer from paused or loaded state
+     */
     resume() {
         this.ticker.postMessage('start');
         this.misc.status.timer = 'started';
     }
 
+    /**
+     * Stops timer
+     */
     stop() {
         this.ticker.postMessage('stop');
         this.reset();
-        this.misc.status.timer = 'stopped';
     }
 
+    /**
+     * Pauses timer
+     */
     pause() {
         this.ticker.postMessage('stop');
         this.misc.status.timer = 'paused';

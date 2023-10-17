@@ -1,42 +1,34 @@
-import { createSignal, createContext, useContext, ParentProps } from "solid-js";
-import { defaultData, defaultMisc, defaultSettings, defaultState, defaultTime } from "./defaults";
-import { Controller } from "../logic/controller";
-
-function createSignalProxy<T extends object>(data: T) {
-    const result: {
-        [key: string | symbol]: T[keyof T]
-    } = {};
-
-    for (const key in data) {
-        if (data[key] !== null && typeof data[key] === 'object') {
-            result[key] = createSignalProxy(data[key] as T[keyof T]);
-        }
-        else {
-            const [dataSignal, setDataSignal] = createSignal(data[key]);
-            Object.defineProperty(result, key, {
-                get() {
-                    return dataSignal()
-                },
-                set(value: T[keyof T]) {
-                    setDataSignal(value);
-                }
-            });
-        }
-    }
-
-    return result as T;
-}
+import { createContext, useContext, ParentProps } from "solid-js";
+import { defaultData, defaultMisc, defaultSettings, defaultState } from "./defaults";
+import { Controller } from "../logic";
+import { createSignalProxy, loadData, saveData, toDetailedTime } from "../utils";
 
 const DataContext = createContext(defaultData);
 
 export function DataProvider(props: ParentProps) {
+    const loadedData = loadData();
+    const isLoaded = {
+        settings: !!loadedData?.settings,
+        state: !!loadedData?.state,
+        time: !!loadedData?.time,
+        all: !!loadedData?.settings && !!loadedData?.state && !!loadedData?.time,
+        any: !!loadedData?.settings || !!loadedData?.state || !!loadedData?.time
+    };
 
     const misc = createSignalProxy(defaultMisc);
-    const settings = createSignalProxy(defaultSettings);
-    const state = createSignalProxy(defaultState);
-    const time = createSignalProxy(defaultTime);
+    const settings = createSignalProxy(loadedData?.settings ?? defaultSettings);
+    const state = createSignalProxy(loadedData?.state ?? defaultState);
+    const time = createSignalProxy(loadedData?.time ?? toDetailedTime(settings.time.work * 60));
 
-    const controller = new Controller(misc, settings, state, time);
+    addEventListener("beforeunload", () => {
+        saveData({
+            settings,
+            state,
+            time
+        });
+    });
+
+    const controller = new Controller(misc, settings, state, time, isLoaded);
 
     const store = {
         misc,
@@ -46,7 +38,8 @@ export function DataProvider(props: ParentProps) {
         pause: controller.pause.bind(controller),
         resume: controller.resume.bind(controller),
         start: controller.start.bind(controller),
-        stop: controller.stop.bind(controller)
+        stop: controller.stop.bind(controller),
+        reset: controller.reset.bind(controller)
     };
 
     return (
